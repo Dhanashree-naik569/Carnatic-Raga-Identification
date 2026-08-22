@@ -1,0 +1,21 @@
+Flask==3.0.3
+Flask-SQLAlchemy==3.1.1
+Flask-JWT-Extended==4.6.0
+Flask-CORS==4.0.1
+Werkzeug==3.0.3
+librosa>=0.10.2
+numpy>=1.26,<2.2
+scikit-learn>=1.5
+soundfile>=0.12
+scipy>=1.13
+python-dotenv==1.0.1
+audioread>=3.0
+matplotlib>=3.8
+pandas>=2.2
+joblib>=1.4
+tensorflow>=2.16; sys_platform != "darwin" or platform_machine != "arm64"
+tensorflow-macos>=2.16; sys_platform == "darwin" and platform_machine == "arm64"
+
+# Optional, only needed if you use scripts/download_dataset.py to pull
+# real labelled audio from HuggingFace:
+datasets>=2.19

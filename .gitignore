@@ -1,0 +1,37 @@
+# Backend
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.db
+backend/.env
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# OS / editor
+.DS_Store
+.vscode/
+*.log
+
+# Audio datasets
+*.wav
+*.mp3
+*.flac
+*.m4a
+*.aac
+
+# Trained models
+*.h5
+*.keras
+*.pkl
+*.pickle
+
+# Python cache
+*.pyc
+.pytest_cache/
+
+# Dataset folders
+backend/dataset/
+Dataset/
