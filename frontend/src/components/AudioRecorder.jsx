@@ -1,28 +1,48 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Mic2, Square } from "lucide-react";
 
 export default function AudioRecorder({
   onRecordingComplete,
+  onRecordingStart,
   disabled = false,
 }) {
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
   const streamRef = useRef(null);
+  const timerRef = useRef(null);
 
   const [recording, setRecording] = useState(false);
+  const [recordingSeconds, setRecordingSeconds] = useState(0);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, []);
 
   const startRecording = async () => {
     if (disabled || recording) return;
 
     setError("");
+    setRecordingSeconds(0);
 
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
-      });
+   try {
+  const stream = await navigator.mediaDevices.getUserMedia({
+    audio: true,
+  });
 
-      streamRef.current = stream;
+  if (onRecordingStart) {
+    onRecordingStart();
+  }
+
+  streamRef.current = stream;
       chunksRef.current = [];
 
       const mediaRecorder = new MediaRecorder(stream);
@@ -40,6 +60,11 @@ export default function AudioRecorder({
           type: mediaRecorder.mimeType || "audio/webm",
         });
 
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+          timerRef.current = null;
+        }
+
         stream.getTracks().forEach((track) => track.stop());
 
         streamRef.current = null;
@@ -56,6 +81,12 @@ export default function AudioRecorder({
 
       mediaRecorder.onerror = () => {
         setError("Unable to record audio. Please try again.");
+
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+          timerRef.current = null;
+        }
+
         setRecording(false);
 
         stream.getTracks().forEach((track) => track.stop());
@@ -67,6 +98,16 @@ export default function AudioRecorder({
       mediaRecorder.start();
 
       setRecording(true);
+
+      const startTime = Date.now();
+
+      timerRef.current = setInterval(() => {
+        const elapsedSeconds = Math.floor(
+          (Date.now() - startTime) / 1000
+        );
+
+        setRecordingSeconds(elapsedSeconds);
+      }, 250);
     } catch (err) {
       console.error("Microphone error:", err);
 
@@ -75,6 +116,7 @@ export default function AudioRecorder({
       );
 
       setRecording(false);
+      setRecordingSeconds(0);
     }
   };
 
@@ -86,9 +128,17 @@ export default function AudioRecorder({
     recorder.stop();
   };
 
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${String(minutes).padStart(2, "0")}:${String(
+      remainingSeconds
+    ).padStart(2, "0")}`;
+  };
+
   return (
     <div className="flex flex-col items-center justify-center gap-5">
-
       <div className="text-center">
         <div
           className={`mx-auto mb-4 w-20 h-20 rounded-full flex items-center justify-center border ${
@@ -112,6 +162,12 @@ export default function AudioRecorder({
             ? "Listening... Click Stop when you finish singing."
             : "Click the microphone to start recording."}
         </p>
+
+        {recording && (
+          <p className="mt-2 text-gold-400 font-mono text-lg font-semibold">
+            {formatTime(recordingSeconds)}
+          </p>
+        )}
       </div>
 
       {!recording ? (

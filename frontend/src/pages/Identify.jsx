@@ -109,10 +109,14 @@ const handleRecordingComplete = (blob) => {
 
           {mode === "live" ? (
 
-            <AudioRecorder
-              onRecordingComplete={handleRecordingComplete}
-              disabled={loading}
-            />
+          <AudioRecorder
+  onRecordingStart={() => {
+    resetPrediction();
+    setPredictionStarted(false);
+  }}
+  onRecordingComplete={handleRecordingComplete}
+  disabled={loading}
+/>
 
           ) : (
 
