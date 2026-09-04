@@ -87,66 +87,6 @@ def create_app():
     _bootstrap_admin(app)
 
     # --------------------------------------------------------
-    # PREDICTION PIPELINE WARMUP
-    # --------------------------------------------------------
-
-    try:
-        import time
-        import io
-
-        import numpy as np
-        import soundfile as sf
-
-        import raga_engine
-
-        t_start = time.time()
-
-        sr = 22050
-
-        t = np.linspace(
-            0,
-            2,
-            sr * 2,
-            dtype=np.float32,
-        )
-
-        tone = (
-            0.2
-            * np.sin(
-                2 * np.pi * 220 * t
-            )
-        ).astype(np.float32)
-
-        buf = io.BytesIO()
-
-        sf.write(
-            buf,
-            tone,
-            sr,
-            format="WAV",
-        )
-
-        warmup_bytes = buf.getvalue()
-
-        raga_engine.identify_raga(
-            warmup_bytes,
-            include_display_features=True,
-        )
-
-        print(
-            f"[startup] Full prediction pipeline warmed up "
-            f"in {time.time() - t_start:.1f}s — "
-            f"real predictions will be fast from the first request."
-        )
-
-    except Exception as e:
-        print(
-            "[startup] Pipeline warmup skipped "
-            f"(predictions will still work, just slower "
-            f"on the very first request): {e}"
-        )
-
-    # --------------------------------------------------------
     # BLUEPRINTS
     # --------------------------------------------------------
 
