@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Link } from "react-router-dom";
 import { Mic2, Library, LayoutDashboard, Waves, ShieldCheck, Sparkles } from "lucide-react";
 
@@ -11,7 +11,7 @@ const features = [
   {
     icon: Library,
     title: "Curated Raga Dataset",
-    desc: "Browse a rich reference library of Carnatic ragas — arohana, avarohana, mood, and time of rendition.",
+    desc: "Browse a rich reference library of Carnatic ragas â€” arohana, avarohana, mood, and time of rendition.",
   },
   {
     icon: LayoutDashboard,
@@ -21,7 +21,7 @@ const features = [
   {
     icon: Waves,
     title: "Upload or Record",
-    desc: "Upload an existing audio clip or record fresh — both flows feed the same identification engine.",
+    desc: "Upload an existing audio clip or record fresh â€” both flows feed the same identification engine.",
   },
   {
     icon: ShieldCheck,
@@ -40,7 +40,7 @@ export default function Landing() {
     <div className="bg-radial-glow min-h-screen">
       <section className="max-w-6xl mx-auto px-6 pt-20 pb-16 text-center">
         <span className="inline-block px-4 py-1.5 rounded-full text-xs tracking-widest uppercase text-gold-300 border border-gold-500/30 bg-gold-500/5 mb-6">
-          Carnatic Music × Machine Learning
+          RagaVani
         </span>
         <h1 className="font-display text-4xl sm:text-6xl font-bold leading-tight mb-6">
           Discover the <span className="gold-text">Raga</span> <br className="hidden sm:block" />
@@ -48,7 +48,7 @@ export default function Landing() {
         </h1>
         <p className="text-white/60 max-w-2xl mx-auto text-lg mb-10">
           RagaVani listens to a sung or recorded phrase and identifies the underlying
-          Carnatic raga — sing live into your mic, or upload a recording, and explore
+          Carnatic raga â€” sing live into your mic, or upload a recording, and explore
           a dataset of classical ragas along the way.
         </p>
         <div className="flex items-center justify-center gap-4">
@@ -102,3 +102,4 @@ export default function Landing() {
     </div>
   );
 }
+
